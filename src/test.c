@@ -36,6 +36,7 @@ void test_single_floats() {
     assert(35.0 == parnum_parse_float("this is a t35.0t"));
     assert(-10.9 == parnum_parse_float("-10.9"));
     assert(-841.34 == parnum_parse_float("negati-841.34ve"));
+    assert(-3.14 == parnum_parse_float("(-PI) = -3.14"));
     assert(0.0 == parnum_parse_float("Hello World!"));
 
     printf("[PASSED]!\n");
