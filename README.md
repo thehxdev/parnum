@@ -7,7 +7,7 @@ A C99 compatible single header library for parsing numbers from string literals 
 ## Status
 
 - [x] Parse single integer values
-- [ ] Parse single floating point numbers
+- [x] Parse single floating point numbers
 - [ ] Parse all integers as a heap allocated array
 - [ ] Parse all floats as a heap allocated array
 
@@ -30,6 +30,26 @@ If no integer value found in the string, returns 0.
 This function recives a constant character pointer (`const char *s`) and parses a single float value (the first one).
 If no float value found in the string, returns `0.0`.
 
+
+
+## Example
+
+```c
+#include "parnum.h"
+
+int main(void) {
+    int x;
+    double y;
+
+    x = parnum_parse_int("Hello1234World!"); // x will be 1234
+    y = parnum_parse_float("Testin the 181.21 double parser"); // y will be 181.21
+
+    y = parnum_parse_float("(-PI) = -3.14"); // y will be -3.14
+    x = parnum_parse_int("temperature is -10 deree"); // x will be -10
+
+    return 0;
+}
+```
 
 
 ## Nix
