@@ -18,10 +18,7 @@ Just include `parnum.h` then compile and link `parnum.c` with your project.
 ## Public API
 Public API of Parnum library.
 
-### `int *parnum_parse_int(const char *s)`
-
-> [!WARNING]
-> The returned `int*` value is allocated on the heap. you must call `free()` on it.
+### `int parnum_parse_int(const char *s)`
 
 This function recives a constant character pointer (`const char *s`) and parses a single integer value (the first one).
-Then returns a pointer to that **heap allocated** integer. If no integers found, returns `NULL`.
+If no integer value found in the string, returns 0.

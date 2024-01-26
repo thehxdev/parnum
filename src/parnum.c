@@ -3,6 +3,7 @@
  * Author: thehxdev
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "parnum.h"
@@ -31,12 +32,12 @@ static char __string_getchar(const char *s, size_t idx) {
 }
 
 
-const char *__strdup(const char *s) {
+char *__strdup(const char *s) {
     if (s == NULL)
         return NULL;
 
     size_t s_len = strlen(s);
-    char *new = (char*) calloc(s_len + 1, sizeof(char));
+    char *new = (char*) malloc((s_len + 1) * sizeof(char));
     if (new == NULL)
         return NULL;
 
@@ -45,30 +46,27 @@ const char *__strdup(const char *s) {
 }
 
 
-static char *__substring(char *s, size_t left, size_t right) {
+static char *__substring(char *s, const size_t left, const size_t right) {
     if (s == NULL)
         return NULL;
 
     if (right <= left)
         return NULL;
 
-    size_t last_idx = strlen(s) - 1;
-    /* if the right-most index is out of range or
-     * it's equal to 0, re-define it as last index. */
-    if (right > last_idx || right == 0)
-        right = last_idx + 1;
-
     s += left;
-    s[right] = '\0';
+    /* if the right-most index is out of range or
+     * it's equal to 0, don't apply it */
+    if (right != 0 || right < strlen(s))
+        s[right] = '\0';
 
     return s;
 }
 
 
-int *parnum_parse_int(const char *s) {
-    int *num;
+int parnum_parse_int(const char *s) {
+    int num;
     char *tmp = (char*) strdup(s);
-    int is_signed = 0, left, right;
+    int is_signed = 0, left, right = 0;
 
     for (left = 0; tmp[left]; left++) {
         if (__is_ascii_num(tmp[left])) {
@@ -83,15 +81,15 @@ int *parnum_parse_int(const char *s) {
     /* if all characters checked an the left pointer 
      * reached to the last null terminator character,
      * means the string `s` does not contain any valid
-     * integer value, so return NULL */
-    if (tmp[left] == '\0')
-        return NULL;
+     * integer value, so return 0 */
+    if (tmp[left] == '\0') {
+        free(tmp);
+        return 0;
+    }
 
-    num = malloc(sizeof(int));
-    *num = atoi(__substring(tmp, left, right));
-
+    num = atoi(__substring(tmp, left, right));
     if (is_signed)
-        (*num) *= -1;
+        num *= -1;
 
     free(tmp);
     return num;
