@@ -22,3 +22,19 @@ Public API of Parnum library.
 
 This function recives a constant character pointer (`const char *s`) and parses a single integer value (the first one).
 If no integer value found in the string, returns 0.
+
+
+## Nix
+If you are a NixOS user or you have `nix` package manager installed, you can use this section to create a
+development environment for C language.
+
+> [!NOTE]
+> Make sure that `nix-command` and `flakes` are enabled. (Search for enabling nix experimental features)
+
+Enter development environment:
+```bash
+nix develop
+```
+
+This will make a temporarily shell with `gcc`, `gnumake`, `gdb` and `valgrind` packages available.
+It also downloads `ccls` package (with some LLVM libraries) as language server program (I use this in neovim).
