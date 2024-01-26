@@ -22,4 +22,7 @@ char *__strdup(const char *s);
  * It searches in the string to find a valid integer */
 int parnum_parse_int(const char *s);
 
+/* Parse a single float value from a string.
+ * It searches in the string to find a valid floating point number */
+double parnum_parse_float(const char *s);
 #endif /* PARNAM_H */

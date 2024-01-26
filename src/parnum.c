@@ -3,7 +3,6 @@
  * Author: thehxdev
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "parnum.h"
@@ -66,11 +65,11 @@ static char *__substring(char *s, const size_t left, const size_t right) {
 int parnum_parse_int(const char *s) {
     int num;
     char *tmp = (char*) strdup(s);
-    int is_signed = 0, left, right = 0;
+    int is_signed = false, left, right = 0;
 
     for (left = 0; tmp[left]; left++) {
         if (__is_ascii_num(tmp[left])) {
-            is_signed = (__string_getchar(tmp, left - 1) == '-') ? 1 : 0;
+            is_signed = (__string_getchar(tmp, left - 1) == '-');
             for (right = left + 1;
                 __is_ascii_num(__string_getchar(tmp, right));
                 right++);
@@ -88,6 +87,53 @@ int parnum_parse_int(const char *s) {
     }
 
     num = atoi(__substring(tmp, left, right));
+    if (is_signed)
+        num *= -1;
+
+    free(tmp);
+    return num;
+}
+
+
+double parnum_parse_float(const char *s) {
+    double num;
+    char *tmp = strdup(s);
+    int is_signed = false, met_fpoint = false, left, right = 0;
+
+    for (left = 0; tmp[left]; left++) {
+        if (__is_ascii_num(tmp[left])) {
+            is_signed = (__string_getchar(tmp, left - 1) == '-');
+
+            right = left + 1;
+            while (tmp[right]) {
+                if (__is_ascii_num(__string_getchar(tmp, right))) {
+                    right++;
+                } else if (
+                    (__string_getchar(tmp, right) == '.')
+                    && (__is_ascii_num(__string_getchar(tmp, right+1)))
+                    && (!met_fpoint)
+                ) {
+                    met_fpoint = true;
+                    right++;
+                } else {
+                    break;
+                }
+            }
+
+            break;
+        }
+    }
+
+    /* if all characters checked an the left pointer 
+     * reached to the last null terminator character,
+     * means the string `s` does not contain any valid
+     * float value, so return 0 */
+    if (tmp[left] == '\0') {
+        free(tmp);
+        return 0.0;
+    }
+
+    num = atof(__substring(tmp, left, right));
     if (is_signed)
         num *= -1;
 
