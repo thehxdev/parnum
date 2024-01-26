@@ -8,10 +8,13 @@
 #include "parnum.h"
 
 
-#if !defined(true) && !defined (false)
+#if !defined(true)
 # define true  (1)
+#endif /* true */
+
+#if !defined(false)
 # define false (0)
-#endif /* true & false */
+#endif /* false */
 
 
 static int __is_ascii_num(char c) {
