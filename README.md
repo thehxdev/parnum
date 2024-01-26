@@ -20,7 +20,7 @@ Public API of Parnum library.
 
 ### `int *parnum_parse_int(const char *s)`
 
-[!WARNING] The returned `int*` value is allocated on the heap. you must call free on it.
+[!WARN] The returned `int*` value is allocated on the heap. you must call free on it.
 
 This function recives a constant character pointer (`const char *s`) and parses a single integer value (the first one).
 Then returns a pointer to that **heap allocated** integer. If no integers found, returns `NULL`.
