@@ -55,7 +55,7 @@ static char *__substring(char *s, const size_t left, const size_t right) {
     s += left;
     /* if the right-most index is out of range or
      * it's equal to 0, don't apply it */
-    if (right != 0 || right < strlen(s))
+    if (right != 0 && right < strlen(s))
         s[right] = '\0';
 
     return s;
