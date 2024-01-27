@@ -21,7 +21,7 @@ Just include `parnum.h` then compile and link `parnum.c` with your project.
 ## Public API
 Public API of Parnum library.
 
-### `int parnum_parse_int(const char *s)`
+### `long parnum_parse_int(const char *s)`
 This function recives a constant character pointer (`const char *s`) and parses a single integer value (the first one).
 If no integer value found in the string, returns 0.
 
@@ -38,7 +38,7 @@ If no float value found in the string, returns `0.0`.
 #include "parnum.h"
 
 int main(void) {
-    int x;
+    long x;
     double y;
 
     x = parnum_parse_int("Hello1234World!"); // x will be 1234
