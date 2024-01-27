@@ -62,8 +62,8 @@ static char *__substring(char *s, const size_t left, const size_t right) {
 }
 
 
-int parnum_parse_int(const char *s) {
-    int num;
+long parnum_parse_int(const char *s) {
+    long num;
     char *tmp = (char*) strdup(s);
     int is_signed = false, left, right = 0;
 
