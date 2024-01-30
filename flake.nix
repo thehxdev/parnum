@@ -13,15 +13,12 @@
         in pkgs.mkShell {
             packages = with pkgs; [
                 # compiler and `make`
-                gcc
+                clang_17
                 gnumake
 
                 # debugging stuff
                 gdb
                 valgrind
-
-                # language server
-                ccls
             ];
 
             # shellHook = ''
