@@ -18,16 +18,13 @@
 
 
 static int __is_ascii_num(char c) {
-    return (c >= '0' && c <= '9') ? true : false;
+    return (c >= '0' && c <= '9');
 }
 
 
 /* for lookahead and lookbehined functionalities while parsing */
-static char __string_getchar(const char *s, size_t idx) {
-    if (s == NULL)
-        return '\0';
-    size_t s_len = strlen(s);
-    return (idx >= s_len) ? '\0' : s[idx];
+static char __string_getchar(const char *s, size_t s_len, long idx) {
+    return (idx >= 0 && idx < (long)s_len) ? s[idx] : '\0';
 }
 
 
@@ -45,7 +42,7 @@ char *__strdup(const char *s) {
 }
 
 
-static char *__substring(char *s, const long left, const long right) {
+static char *__substring(char *s, size_t s_len, const long left, const long right) {
     if (s == NULL)
         return NULL;
 
@@ -55,7 +52,7 @@ static char *__substring(char *s, const long left, const long right) {
     s += left;
     /* if the right-most index is out of range or
      * it's equal to 0, don't apply it */
-    if (right != 0 && right < (long)strlen(s))
+    if (right != 0 && right < (long)s_len)
         s[right] = '\0';
 
     return s;
@@ -67,11 +64,12 @@ long parnum_parse_int(const char *s) {
     char *tmp = (char*) strdup(s);
     int is_signed = false, left, right = 0;
 
+    size_t tmp_len = strlen(tmp);
     for (left = 0; tmp[left]; left++) {
         if (__is_ascii_num(tmp[left])) {
-            is_signed = (__string_getchar(tmp, left - 1) == '-');
+            is_signed = (__string_getchar(tmp, tmp_len, left - 1) == '-');
             for (right = left + 1;
-                __is_ascii_num(__string_getchar(tmp, right));
+                __is_ascii_num(__string_getchar(tmp, tmp_len, right));
                 right++);
             break;
         }
@@ -86,7 +84,7 @@ long parnum_parse_int(const char *s) {
         return 0;
     }
 
-    num = atoi(__substring(tmp, left, right));
+    num = atoi(__substring(tmp, tmp_len, left, right));
     if (is_signed)
         num *= -1;
 
@@ -100,17 +98,18 @@ double parnum_parse_float(const char *s) {
     char *tmp = strdup(s);
     int is_signed = false, met_fpoint = false, left, right = 0;
 
+    size_t tmp_len = strlen(tmp);
     for (left = 0; tmp[left]; left++) {
         if (__is_ascii_num(tmp[left])) {
-            is_signed = (__string_getchar(tmp, left - 1) == '-');
+            is_signed = (__string_getchar(tmp, tmp_len, left - 1) == '-');
 
             right = left + 1;
             while (tmp[right]) {
-                if (__is_ascii_num(__string_getchar(tmp, right))) {
+                if (__is_ascii_num(__string_getchar(tmp, tmp_len, right))) {
                     right++;
                 } else if (
-                    (__string_getchar(tmp, right) == '.')
-                    && (__is_ascii_num(__string_getchar(tmp, right+1)))
+                    (__string_getchar(tmp, tmp_len, right) == '.')
+                    && (__is_ascii_num(__string_getchar(tmp, tmp_len, right+1)))
                     && (!met_fpoint)
                 ) {
                     met_fpoint = true;
@@ -133,7 +132,7 @@ double parnum_parse_float(const char *s) {
         return 0.0;
     }
 
-    num = atof(__substring(tmp, left, right));
+    num = atof(__substring(tmp, tmp_len, left, right));
     if (is_signed)
         num *= -1;
 
