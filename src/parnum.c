@@ -17,13 +17,13 @@
 #endif /* false */
 
 
-static int __is_ascii_num(char c) {
+static inline int __is_ascii_num(char c) {
     return (c >= '0' && c <= '9');
 }
 
 
 /* for lookahead and lookbehined functionalities while parsing */
-static char __string_getchar(const char *s, size_t s_len, long idx) {
+static inline char __string_getchar(const char *s, size_t s_len, long idx) {
     return (idx >= 0 && idx < (long)s_len) ? s[idx] : '\0';
 }
 
